@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#03A9F4</color>
+
+    <color name="colorRed">#F44336</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="colorBlue">#2196F3</color>
+    <color name="colorYellow">#FFEB3B</color>
+    <color name="colorOrange">#FF9800</color>
+    <color name="colorPurple">#9C27B0</color>
+    <color name="colorPink">#E91E63</color>
+    <color name="colorBrown">#795548</color>
+
+    <color name="colorPriorityLow">#4CAF50</color>
+    <color name="colorPriorityMedium">#FF9800</color>
+    <color name="colorPriorityHigh">#F44336</color>
+
+    <color name="colorTaskCardBackground">#FFFFFF</color>
+    <color name="colorBackground">#F5F5F5</color>
+    <color name="colorText">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
+</resources>

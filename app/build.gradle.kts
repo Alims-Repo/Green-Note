@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -14,16 +15,22 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        android.buildFeatures.buildConfig = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField("boolean", "DEBUG_MODE", "false")
+        }
+        debug {
+            buildConfigField("boolean", "DEBUG_MODE", "true")
         }
     }
     compileOptions {
@@ -45,6 +52,7 @@ dependencies {
     implementation(libs.nc.base)
 
     implementation(libs.room.runtime)
+    ksp("androidx.room:room-compiler:2.6.1")
     implementation(libs.work.runtime.ktx)
 
     implementation(libs.navigation.fragment.ktx)

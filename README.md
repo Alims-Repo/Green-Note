@@ -73,7 +73,7 @@ cd green-note
 ## 🧩 Architecture
 
 ```
-com.greennote.app/
+com.alim.greennote/
 ├── data/
 │   ├── models/
 │   ├── repository/

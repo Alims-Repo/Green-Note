@@ -2,6 +2,7 @@ package com.alim.greennote.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.launch
@@ -27,17 +28,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
         setContentView(R.layout.activity_splash)
-        ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById<View?>(R.id.main),
-            OnApplyWindowInsetsListener { v: View?, insets: WindowInsetsCompat? ->
-                val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
-                v!!.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            })
+
     }
 
     override fun onResume() {
         super.onResume()
+        Log.e("SplashActivity", "onResume")
         coroutineScope.launch {
             delay(1500L)
             startActivity(
@@ -49,8 +45,8 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        coroutineScope.coroutineContext.cancelChildren()
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        coroutineScope.coroutineContext.cancelChildren()
+//    }
 }

@@ -43,7 +43,7 @@ class AddTaskActivity : BaseActivity<ActivityAddTaskBinding>() {
         setupColorOptions() // NEW ✅
 
         btnDueDate.setOnClickListener {
-            showDatePicker()
+            showDateTimePicker()
         }
 
         save.setOnClickListener {
@@ -156,24 +156,49 @@ class AddTaskActivity : BaseActivity<ActivityAddTaskBinding>() {
         checkIcon.visibility = View.VISIBLE
     }
 
-    private fun showDatePicker() {
+    private fun showDateTimePicker() {
         val calendar = Calendar.getInstance()
+
+        // Show the DatePickerDialog first
         val datePicker = android.app.DatePickerDialog(
             this,
             { _, year, month, dayOfMonth ->
+                // Set the date based on user selection
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                selectedDateMillis = calendar.timeInMillis
 
-                val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-                binding.btnDueDate.text = sdf.format(Date(selectedDateMillis))
+                // Now show the TimePickerDialog to pick the time
+                showTimePicker(calendar)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         datePicker.show()
+    }
+
+    private fun showTimePicker(calendar: Calendar) {
+        // Show the TimePickerDialog
+        val timePicker = android.app.TimePickerDialog(
+            this,
+            { _, hourOfDay, minute ->
+                // Set the time based on user selection
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+
+                // Combine the selected date and time into milliseconds
+                selectedDateMillis = calendar.timeInMillis
+
+                // Format and set the combined date and time on the button
+                val sdf = SimpleDateFormat("hh:mm a, dd MMM yyyy", Locale.getDefault())
+                binding.btnDueDate.text = sdf.format(Date(selectedDateMillis))
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false // false for 24-hour format, true for 12-hour format
+        )
+        timePicker.show()
     }
 
     val colors = listOf(

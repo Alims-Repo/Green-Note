@@ -71,6 +71,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             )
         }
 
+        fabAddDrawing.setOnClickListener {
+            toggleFabMenu()
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    DrawingActivity::class.java
+                )
+            )
+        }
+
         fabAddTask.setOnClickListener {
             toggleFabMenu()
             startActivity(
@@ -84,23 +94,40 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun ActivityMainBinding.toggleFabMenu() {
         if (isFabMenuOpen) {
-            fabMain.animate().rotation(0F).start()
+            fabMain.animate().rotation(0F).scaleY(1F).scaleX(1F).start()
 
-            fabAddNote.animate().translationY(0F).alpha(0F).setListener(
+            fabAddNote.animate().translationY(0F).alpha(0F).scaleX(0F).setListener(
                 SimpleAnimatorListener(fabAddNote)
             ).start()
-            fabAddTask.animate().translationY(0F).alpha(0F).setListener(
+            fabAddDrawing.animate().translationY(0F).translationX(0F)
+                .scaleX(0F)
+                .alpha(0F).setListener(
                 SimpleAnimatorListener(fabAddTask)
             ).start()
+            fabAddTask.animate().translationX(0F).alpha(0F)
+                .scaleX(0F)
+                .setListener(
+                    SimpleAnimatorListener(fabAddTask)
+            ).start()
         } else {
-            fabMain.animate().rotation(45F).start()
+            fabMain.animate().rotation(45F).scaleY(0.75F).scaleX(0.75F).start()
 
             fabAddNote.isVisible = true
             fabAddTask.isVisible = true
+            fabAddDrawing.isVisible = true
 
-            fabAddNote.animate().translationY(-180F)
+            fabAddNote.animate().translationY(-200F)
+                .scaleX(0.85F)
+                .scaleY(0.85F)
                 .alpha(1F).start()
-            fabAddTask.animate().translationY(-360F)
+            fabAddDrawing.animate().translationY(-140F)
+                .translationX(-140F)
+                .scaleX(0.85F)
+                .scaleY(0.85F)
+                .alpha(1F).start()
+            fabAddTask.animate().translationX(-200F)
+                .scaleX(0.85F)
+                .scaleY(0.85F)
                 .alpha(1F).start()
         }
         isFabMenuOpen = !isFabMenuOpen

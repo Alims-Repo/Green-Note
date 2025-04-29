@@ -42,11 +42,12 @@ class SplashActivity : AppCompatActivity() {
                     MainActivity::class.java
                 )
             )
+            finish()
         }
     }
 
-//    override fun onPause() {
-//        super.onPause()
-//        coroutineScope.coroutineContext.cancelChildren()
-//    }
+    override fun onPause() {
+        super.onPause()
+        coroutineScope.coroutineContext.cancelChildren()
+    }
 }

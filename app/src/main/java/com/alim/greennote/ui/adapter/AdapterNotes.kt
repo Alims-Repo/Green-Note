@@ -29,7 +29,7 @@ class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
             binding.taskTitle.text = model.title
 
             // Set due date (convert millis to a formatted date string)
-            val dueDate = DateFormat.format("MMM dd, yyyy", model.dueDateMillis)
+            val dueDate = DateFormat.format("hh:mm a, dd MMM yyyy", model.dueDateMillis)
             binding.taskDueDate.text = dueDate
 
             // Set category (could be a color, or any string-based category)

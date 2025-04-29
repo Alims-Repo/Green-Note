@@ -1,50 +1,33 @@
-package com.alim.greennote.ui.activity;
+package com.alim.greennote.ui.activity
 
-import android.os.Bundle;
-import android.view.View;
+import android.view.View
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.alim.greennote.R
+import com.alim.greennote.databinding.ActivityAddNoteBinding
+import com.nelu.ncbase.base.BaseActivity
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+class AddNoteActivity : BaseActivity<ActivityAddNoteBinding>() {
 
-import com.alim.greennote.R;
-import com.alim.greennote.databinding.ActivityAddNoteBinding;
-import com.alim.greennote.databinding.ActivityMainBinding;
-import com.nelu.ncbase.base.BaseActivity;
+    override fun ActivityAddNoteBinding.afterViewCreate() {
+        enableEdgeToEdge()
+        initSystemPadding()
 
-public class AddNoteActivity extends BaseActivity<ActivityAddNoteBinding> {
-
-    @Override
-    public void afterViewCreate(@NonNull ActivityAddNoteBinding activityAddNoteBinding) {
-        EdgeToEdge.enable(this);
-        initSystemPadding();
-        back(activityAddNoteBinding.back);
+        back.back()
     }
 
-    private void initSystemPadding() {
-        View statusBar = findViewById(R.id.status);
-        View mainContent = findViewById(R.id.main);
-
-        ViewCompat.setOnApplyWindowInsetsListener(statusBar, new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
-                return insets;
-            }
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(mainContent, new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(0, 0, 0, systemBars.bottom);
-                return insets;
-            }
-        });
+    private fun initSystemPadding() {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.status)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(0, 0, 0, systemBars.bottom)
+            insets
+        }
     }
 }

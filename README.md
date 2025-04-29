@@ -33,9 +33,9 @@
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="/api/placeholder/200/400" alt="Home Screen" width="200">
-  <img src="/api/placeholder/200/400" alt="Note Editor" width="200">
-  <img src="/api/placeholder/200/400" alt="Dark Mode" width="200">
+  <img src="/images/home.jpg" alt="Home Screen" width="200">
+  <img src="/images/drawing.jpg" alt="Note Editor" width="200">
+  <img src="/images/task.jpg" alt="Dark Mode" width="200">
 </p>
 
 ## 🚀 Getting Started

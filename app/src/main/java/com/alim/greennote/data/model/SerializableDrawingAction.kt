@@ -68,7 +68,7 @@ data class SerializableDrawingAction(
             }
 
             return DrawingView.DrawingAction(path, paint, isErase).apply {
-                this.points = pathPoints
+//                this.points = pathPoints
             }
         }
     }

@@ -7,7 +7,7 @@
 ![Platform](https://img.shields.io/badge/platform-Android-brightgreen)
 
 <p align="center">
-  <img src="/api/placeholder/400/200" alt="Green Note Logo">
+  <img src="/images/logo" alt="Green Note Logo">
 </p>
 
 ## ✨ Features

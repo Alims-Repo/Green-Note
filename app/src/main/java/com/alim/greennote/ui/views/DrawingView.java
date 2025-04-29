@@ -311,7 +311,6 @@ public class DrawingView extends View {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    // Method to save drawing to a file
     public String saveToFile(File directory, String filename) throws IOException {
         if (!directory.exists()) {
             directory.mkdirs();
@@ -332,8 +331,6 @@ public class DrawingView extends View {
         notifyDrawingChanged();
         invalidate();
     }
-
-    // Method to load drawing from a bitmap
     public void loadFromBitmap(Bitmap bitmap) {
         if (bitmap != null) {
             int width = getWidth();
@@ -342,14 +339,11 @@ public class DrawingView extends View {
             Log.e("BITMAP", width + "");
 
             if (width > 0 && height > 0) {
-                // Scale bitmap to fit view dimensions
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
 
-                // Clear current drawing
                 actions.clear();
                 undoneActions.clear();
 
-                // Draw loaded bitmap onto canvas
                 drawCanvas.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR);
                 drawCanvas.drawBitmap(scaledBitmap, 0, 0, null);
 

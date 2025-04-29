@@ -27,7 +27,9 @@ import kotlinx.coroutines.launch
 
 class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
 
-    private val data = mutableListOf<Any>()
+    val data = mutableListOf<Any>()
+
+    var onDeleteItem: ((Any) -> Unit)? = null
 
     fun update(newData: List<Any>) {
         val diffCallback = NotesDiffCallback(data, newData)

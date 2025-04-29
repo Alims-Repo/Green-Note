@@ -17,7 +17,7 @@ interface TaskDao {
     suspend fun updateTask(task: ModelTask)
 
     @Delete
-    suspend fun deleteTask(task: ModelTask)
+    fun deleteTask(task: ModelTask)
 
     @Query("SELECT * FROM tasks ORDER BY dueDateMillis ASC")
     fun getAllTasks(): List<ModelTask>

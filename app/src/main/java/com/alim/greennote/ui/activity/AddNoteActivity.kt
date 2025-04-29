@@ -26,6 +26,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding>() {
                     description = binding.note.text.toString(),
                 )
             )
+            finish()
         }
     }
 

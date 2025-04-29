@@ -1,21 +1,18 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep all generated ViewBinding classes
+-keep class **ViewBinding { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep all ViewBinding classes in the generated databinding package
+-keep class **.databinding.*Binding { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep the inflate method in all ViewBinding classes
+-keepclassmembers class **.databinding.*Binding {
+    public static ** inflate(android.view.LayoutInflater);
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep OkHttp library classes
+-keep class okhttp3.** { *; }
+-keepclassmembers class okhttp3.** { *; }
+
+# Keep Gson library classes
+-keep class com.google.gson.** { *; }
+-keepclassmembers class com.google.gson.** { *; }

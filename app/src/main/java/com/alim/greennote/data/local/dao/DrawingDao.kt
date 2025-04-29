@@ -2,16 +2,18 @@ package com.alim.greennote.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.alim.greennote.data.model.DrawingEntity
+import com.alim.greennote.data.model.ModelNote
 
 @Dao
 interface DrawingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDrawing(drawing: DrawingEntity): Long
+    fun insertDrawing(drawing: DrawingEntity): Long
 
     @Update
     suspend fun updateDrawing(drawing: DrawingEntity)
@@ -30,4 +32,7 @@ interface DrawingDao {
 
     @Query("DELETE FROM drawings WHERE id = 1")
     suspend fun delete()
+
+    @Delete
+    fun deleteDrawing(task: DrawingEntity)
 }

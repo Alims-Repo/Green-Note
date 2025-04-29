@@ -143,6 +143,27 @@
                     android:text="All"/>
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/notes"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notes"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/drawings"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drawings"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/tasks"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tasks"/>
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/completed"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
@@ -157,20 +178,6 @@
                     android:text="Incompleted"/>
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/notes"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Notes"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/tasks"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tasks"/>
-
-                <com.google.android.material.chip.Chip
                     android:id="@+id/archive"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
@@ -181,14 +188,29 @@
 
         </HorizontalScrollView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chip_scroller" />
+            app:layout_constraintTop_toBottomOf="@id/chip_scroller" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/nothing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nothing Found"
+                android:textSize="20sp"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -206,7 +228,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:visibility="gone"
-            app:backgroundTint="@color/colorGreen"
+            app:backgroundTint="@color/colorBlue"
             android:layout_gravity="bottom|end"
             android:src="@drawable/round_edit_note_24"
             app:layout_constraintEnd_toEndOf="parent"

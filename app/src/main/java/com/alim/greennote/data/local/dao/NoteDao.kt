@@ -22,7 +22,7 @@ interface NoteDao {
     suspend fun updateNote(task: ModelNote)
 
     @Delete
-    suspend fun deleteNote(task: ModelNote)
+    fun deleteNote(task: ModelNote)
 
     @Query("SELECT * FROM notes")
     fun getAllNotes(): List<ModelNote>

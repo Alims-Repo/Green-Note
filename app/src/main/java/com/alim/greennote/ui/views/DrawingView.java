@@ -10,9 +10,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,26 +36,58 @@ public class DrawingView extends View {
     private static final float TOUCH_TOLERANCE = 4;
 
     // Stroke history for undo/redo
-    private static class DrawingAction {
-        Path path;
-        Paint paint;
-        boolean isErase;
+    public static class DrawingAction {
+        public Path path;
+        public Paint paint;
+        public boolean isErase;
+        public List<PathPoint> points = new ArrayList<>();
 
-        DrawingAction(Path path, Paint paint, boolean isErase) {
+        public DrawingAction(Path path, Paint paint, boolean isErase) {
             this.path = path;
             this.paint = paint;
             this.isErase = isErase;
         }
     }
 
-    private List<DrawingAction> actions = new ArrayList<>();
+    // Make PathPoint public for serialization
+    public static class PathPoint {
+        public float x, y;
+        public boolean isQuadTo; // true if this is a quadratic curve point
+
+        public PathPoint(float x, float y, boolean isQuadTo) {
+            this.x = x;
+            this.y = y;
+            this.isQuadTo = isQuadTo;
+        }
+    }
+
+    // Make the actions list public so it can be accessed for serialization
+    public List<DrawingAction> actions = new ArrayList<>();
     private List<DrawingAction> undoneActions = new ArrayList<>();
     private DrawingStateListener stateListener;
+
+    // Current points for the active stroke
+    private List<PathPoint> currentPoints = new ArrayList<>();
 
     // Interface for state change notifications
     public interface DrawingStateListener {
         void onDrawingChanged();
         void onUndoRedoStateChanged(boolean canUndo, boolean canRedo);
+    }
+
+    // Method to set actions from loaded data
+    public void setActions(List<DrawingAction> loadedActions) {
+        // Clear current drawing
+        actions.clear();
+        undoneActions.clear();
+
+        // Add loaded actions
+        actions.addAll(loadedActions);
+
+        // Redraw
+        redrawAll();
+        updateUndoRedoState();
+        notifyDrawingChanged();
     }
 
     public DrawingView(Context context, AttributeSet attrs) {
@@ -266,6 +301,16 @@ public class DrawingView extends View {
         return !undoneActions.isEmpty();
     }
 
+    public String getImageBase() {
+        if (canvasBitmap == null) return null;
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        canvasBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
     // Method to save drawing to a file
     public String saveToFile(File directory, String filename) throws IOException {
         if (!directory.exists()) {
@@ -280,11 +325,21 @@ public class DrawingView extends View {
         return file.getAbsolutePath();
     }
 
+    public void loadFromActions(List<DrawingAction> ac) {
+        actions.clear();
+        actions.addAll(ac);
+        updateUndoRedoState();
+        notifyDrawingChanged();
+        invalidate();
+    }
+
     // Method to load drawing from a bitmap
     public void loadFromBitmap(Bitmap bitmap) {
         if (bitmap != null) {
             int width = getWidth();
             int height = getHeight();
+
+            Log.e("BITMAP", width + "");
 
             if (width > 0 && height > 0) {
                 // Scale bitmap to fit view dimensions

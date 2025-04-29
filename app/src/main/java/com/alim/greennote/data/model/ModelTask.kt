@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tasks")
 data class ModelTask(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    override val id: Long = 0,
     val title: String = "",
     val description: String = "",
     val dueDateMillis: Long = 100,
@@ -16,5 +16,6 @@ data class ModelTask(
     val color: Int = Color.GREEN,
     val autoArchiveDays: Int = 0,
     val completed: Boolean = false,
-    val hasDrawing: Boolean = false
-)
+    val hasDrawing: Boolean = false,
+    override val createdAt: Long = System.currentTimeMillis(),
+): ModelId(id, createdAt)

@@ -13,8 +13,10 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.alim.greennote.R
 import com.alim.greennote.data.Dummy
+import com.alim.greennote.data.model.ModelId
 import com.alim.greennote.data.model.ModelTask
 import com.alim.greennote.databinding.ActivityMainBinding
+import com.alim.greennote.di.Injection
 import com.alim.greennote.ui.adapter.AdapterNotes
 import com.alim.greennote.viewModel.ViewModelHome
 import com.nelu.ncbase.base.BaseActivity
@@ -135,13 +137,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initObserver() {
         viewModel.allNotes.observe(this) {
-            adapterNotes.update(it)
+            val temp = ArrayList<ModelId>()
+            temp.addAll(it)
+            temp.addAll(Injection.drawingDao.getDrawings())
+            adapterNotes.update(temp.sortedByDescending { c -> c.createdAt })
+        }
+
+        viewModel.allDrawings.observe(this) {
+            val temp = ArrayList<ModelId>()
+            temp.addAll(it)
+            temp.addAll(Injection.taskDao.getAllTasks())
+            adapterNotes.update(temp.sortedByDescending { c -> c.createdAt })
         }
     }
 
     open inner class SimpleAnimatorListener(
         private val view: View
     ) : Animator.AnimatorListener {
+
         override fun onAnimationStart(animation: Animator) {
             println("Animation started")
         }

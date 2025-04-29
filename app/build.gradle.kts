@@ -55,6 +55,8 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation(libs.work.runtime.ktx)
 
+    implementation("com.google.code.gson:gson:2.10.1")
+
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.activity)

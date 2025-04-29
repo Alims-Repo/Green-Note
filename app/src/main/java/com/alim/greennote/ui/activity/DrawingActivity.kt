@@ -5,7 +5,8 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +20,18 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import com.alim.greennote.R
+import com.alim.greennote.data.model.DrawingEntity
 import com.alim.greennote.databinding.ActivityDrawingBinding
+import com.alim.greennote.di.Injection
 import com.alim.greennote.ui.views.DrawingView
 import com.google.android.material.slider.Slider
 import com.nelu.ncbase.base.BaseActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -90,7 +97,6 @@ class DrawingActivity : BaseActivity<ActivityDrawingBinding>(), DrawingView.Draw
         if (drawingPath != null) {
             loadDrawingFromPath(drawingPath)
         } else {
-            // Check if there's a temp drawing to restore
             val tempPath = preferences.getString(KEY_TEMP_DRAWING_PATH, null)
             if (tempPath != null) {
                 val tempFile = File(tempPath)
@@ -99,6 +105,11 @@ class DrawingActivity : BaseActivity<ActivityDrawingBinding>(), DrawingView.Draw
                 }
             }
         }
+    }
+
+    fun base64ToBitmap(base64String: String?): Bitmap {
+        val decodedBytes: ByteArray = Base64.decode(base64String, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     }
 
     private fun showRestoreDialog(tempFile: File) {
@@ -313,11 +324,17 @@ class DrawingActivity : BaseActivity<ActivityDrawingBinding>(), DrawingView.Draw
             }
 
             // Generate unique filename based on timestamp
-            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-            val filename = "Drawing_${timeStamp}.png"
 
             // Save the drawing to file
-            val filePath = binding.drawingView.saveToFile(storageDir, filename)
+            val filePath = binding.drawingView.saveToFile(storageDir, "${System.currentTimeMillis()}.png")
+
+            CoroutineScope(Dispatchers.IO).launch {
+                Injection.drawingDao.insertDrawing(
+                    DrawingEntity(
+                        drawingData = binding.drawingView.getImageBase()
+                    )
+                )
+            }
 
             // Return the file path to the calling activity
             val returnIntent = intent
@@ -333,6 +350,7 @@ class DrawingActivity : BaseActivity<ActivityDrawingBinding>(), DrawingView.Draw
             Toast.makeText(this, "Failed to save drawing: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun saveTempDrawing() {
         if (!hasUnsavedChanges) return

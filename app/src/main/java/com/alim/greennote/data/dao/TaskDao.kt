@@ -20,7 +20,7 @@ interface TaskDao {
     suspend fun deleteTask(task: ModelTask)
 
     @Query("SELECT * FROM tasks ORDER BY dueDateMillis ASC")
-    suspend fun getAllTasks(): List<ModelTask>
+    fun getAllTasks(): List<ModelTask>
 
     @Query("SELECT * FROM tasks ORDER BY dueDateMillis ASC")
     fun getAllTasksLive(): LiveData<List<ModelTask>>

@@ -44,31 +44,30 @@
 
 ```bash
 # Available on Google Play Store
-https://play.google.com/store/apps/details?id=com.greennote.app
+https://play.google.com/store/apps/details?id=com.alim.greennote
 
 # Or build from source
-git clone https://github.com/yourusername/green-note.git
-cd green-note
+git clone https://github.com/Alims-Repo/Green-Note.git
+cd Green-Note
 ./gradlew installDebug
 ```
 
 ### System Requirements
 
-| Requirement | Specification |
-|-------------|---------------|
+| Requirement | Specification      |
+|-------------|--------------------|
 | Android Version | 6.0+ (Marshmallow) |
-| Storage | 10MB minimum |
-| RAM | 50MB minimum |
-| Permissions | Storage, Camera (optional) |
+| Storage | 10MB minimum       |
+| RAM | 50MB minimum       |
+| Permissions | Notification       |
 
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: XML layouts with Material Design 3 components
-- **Backend**: Java with modern architecture patterns (MVVM)
+- **Backend**: Java, Kotlin with modern architecture patterns (MVVM)
 - **Database**: Room Persistence Library over SQLite
-- **Animation**: Lottie for delightful micro-interactions
 
 ## 🧩 Architecture
 
@@ -83,9 +82,8 @@ com.alim.greennote/
 │   ├── fragments/
 │   ├── adapters/
 │   └── viewmodels/
-└── utils/
-    ├── helpers/
-    └── extensions/
+├── utils/
+└── viewModel/
 ```
 
 ## 🤝 Contributing
@@ -108,10 +106,8 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 📮 Contact & Support
 
-- **Website**: [greennote.app](https://greennote.app)
-- **Email**: support@greennote.app
-- **Twitter**: [@GreenNoteApp](https://twitter.com/GreenNoteApp)
-- **GitHub**: [github.com/yourusername/green-note](https://github.com/yourusername/green-note)
+- **Email**: sourav.0.alim@gmail.com
+- **GitHub**: [https://github.com/Alims-Repo/Green-Note](https://github.com/Alims-Repo/Green-Note)
 
 ---
 

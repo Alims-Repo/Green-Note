@@ -6,7 +6,9 @@ import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.alim.greennote.R
+import com.alim.greennote.data.model.ModelNote
 import com.alim.greennote.databinding.ActivityAddNoteBinding
+import com.alim.greennote.di.Injection
 import com.nelu.ncbase.base.BaseActivity
 
 class AddNoteActivity : BaseActivity<ActivityAddNoteBinding>() {
@@ -16,6 +18,15 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding>() {
         initSystemPadding()
 
         back.back()
+
+        save.setOnClickListener {
+            Injection.noteDao.insertNote(
+                ModelNote(
+                    title = binding.title.text.toString(),
+                    description = binding.note.text.toString(),
+                )
+            )
+        }
     }
 
     private fun initSystemPadding() {

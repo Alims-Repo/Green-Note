@@ -18,4 +18,4 @@ data class ModelTask(
     val completed: Boolean = false,
     val hasDrawing: Boolean = false,
     override val createdAt: Long = System.currentTimeMillis(),
-): ModelId(id, createdAt)
+): ModelId(id, createdAt, title + description + category)

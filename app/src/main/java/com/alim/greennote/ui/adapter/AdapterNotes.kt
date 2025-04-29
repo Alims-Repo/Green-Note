@@ -1,5 +1,7 @@
 package com.alim.greennote.ui.adapter
 
+import androidx.recyclerview.widget.DiffUtil
+
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,10 +13,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.alim.greennote.data.model.DrawingEntity
+import com.alim.greennote.data.model.ModelNote
 import com.alim.greennote.data.model.ModelTask
 import com.alim.greennote.databinding.ItemDrawingBinding
+import com.alim.greennote.databinding.ItemNoteBinding
 import com.alim.greennote.databinding.ItemTaskBinding
 import com.alim.greennote.di.Injection
+import com.alim.greennote.utils.NotesDiffCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,13 +27,15 @@ import kotlinx.coroutines.launch
 
 class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
 
-    private val data = ArrayList<Any>()
+    private val data = mutableListOf<Any>()
 
-    @SuppressLint("NotifyDataSetChanged")
     fun update(newData: List<Any>) {
+        val diffCallback = NotesDiffCallback(data, newData)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         data.clear()
         data.addAll(newData)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class ViewHolder(
@@ -39,19 +46,25 @@ class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
             when(model) {
                 is ModelTask -> bind(model)
                 is DrawingEntity -> bind(model)
+                is ModelNote -> bind(model)
             }
+        }
+
+        private fun bind(model: ModelNote) {
+            binding as ItemNoteBinding
+            binding.title.text = model.title
+            binding.description.text = model.description
+
+            binding.date.text = DateFormat.format("hh:mm a, dd MMM yyyy", model.createdAt).toString()
         }
 
         private fun bind(model: DrawingEntity) {
             binding as ItemDrawingBinding
-            CoroutineScope(Dispatchers.Main).launch {
-//                delay(250L)
-                binding.drawing.setImageBitmap(
-                    base64ToBitmap(model.drawingData)
-                )
+            binding.drawing.setImageBitmap(
+                base64ToBitmap(model.drawingData)
+            )
 
-                binding.date.text = DateFormat.format("hh:mm a, dd MMM yyyy", model.createdAt).toString()
-            }
+            binding.date.text = DateFormat.format("hh:mm a, dd MMM yyyy", model.createdAt).toString()
         }
 
         fun base64ToBitmap(base64String: String?): Bitmap {
@@ -72,6 +85,12 @@ class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
 
             binding.checkboxCompleted.isChecked = model.completed
 
+            binding.checkboxCompleted.setOnCheckedChangeListener { b, c->
+                Injection.taskDao.insertTask(
+                    model.copy(completed = c)
+                )
+            }
+
             if (model.hasDrawing) {
                 binding.drawingIndicator.visibility = View.VISIBLE
             } else {
@@ -85,16 +104,15 @@ class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
         type: Int
     ) = ViewHolder(
         when(Type.entries.get(type)) {
-            Type.TYPE_TASK -> {
-                ItemTaskBinding.inflate(
-                    LayoutInflater.from(view.context), view, false
-                )
-            }
-            Type.TYPE_DRAWING -> {
-                ItemDrawingBinding.inflate(
-                    LayoutInflater.from(view.context), view, false
-                )
-            }
+            Type.TYPE_TASK -> ItemTaskBinding.inflate(
+                LayoutInflater.from(view.context), view, false
+            )
+            Type.TYPE_DRAWING -> ItemDrawingBinding.inflate(
+                LayoutInflater.from(view.context), view, false
+            )
+            Type.TYPE_NOTE -> ItemNoteBinding.inflate(
+                LayoutInflater.from(view.context), view, false
+            )
         }
     )
 
@@ -109,6 +127,7 @@ class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
         return when(data[position]) {
             is ModelTask -> Type.TYPE_TASK.ordinal
             is DrawingEntity -> Type.TYPE_DRAWING.ordinal
+            is ModelNote -> Type.TYPE_NOTE.ordinal
             else -> throw IllegalArgumentException("Unknown type")
         }
     }
@@ -116,6 +135,6 @@ class AdapterNotes : RecyclerView.Adapter<AdapterNotes.ViewHolder>() {
     override fun getItemCount() = data.size
 
     enum class Type {
-        TYPE_TASK, TYPE_DRAWING
+        TYPE_TASK, TYPE_DRAWING, TYPE_NOTE
     }
 }

@@ -10,6 +10,10 @@ data class DrawingEntity(
     val drawingData: String,
     override val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
-): ModelId(id, createdAt)
+): ModelId(id, createdAt, "drawing")
 
-open class ModelId(open val id: Long, open val createdAt: Long)
+open class ModelId(
+    open val id: Long,
+    open val createdAt: Long,
+    open var queryString: String
+)

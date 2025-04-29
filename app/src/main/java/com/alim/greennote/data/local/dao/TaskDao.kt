@@ -1,4 +1,4 @@
-package com.alim.greennote.data.dao
+package com.alim.greennote.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

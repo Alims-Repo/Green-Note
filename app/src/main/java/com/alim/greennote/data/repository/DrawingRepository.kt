@@ -1,6 +1,6 @@
 package com.alim.greennote.data.repository
 
-import com.alim.greennote.data.dao.DrawingDao
+import com.alim.greennote.data.local.dao.DrawingDao
 import com.alim.greennote.data.model.DrawingEntity
 import com.alim.greennote.data.model.SerializableDrawingAction
 import com.alim.greennote.data.model.SerializableDrawingAction.Companion.toDrawingAction

@@ -18,6 +18,7 @@ import com.alim.greennote.R
 import com.alim.greennote.data.model.ModelTask
 import com.alim.greennote.databinding.ActivityAddTaskBinding
 import com.alim.greennote.di.Injection
+import com.alim.greennote.utils.scheduleNotification
 import com.nelu.ncbase.base.BaseActivity
 import kotlinx.coroutines.launch
 import java.sql.Date
@@ -40,7 +41,7 @@ class AddTaskActivity : BaseActivity<ActivityAddTaskBinding>() {
         val categories = listOf("Personal", "Work", "School", "Leisure")
         spinnerCategory.adapter = ArrayAdapter(this@AddTaskActivity, android.R.layout.simple_spinner_dropdown_item, categories)
 
-        setupColorOptions() // NEW ✅
+        setupColorOptions()
 
         btnDueDate.setOnClickListener {
             showDateTimePicker()
@@ -90,6 +91,8 @@ class AddTaskActivity : BaseActivity<ActivityAddTaskBinding>() {
             color = selectedColor,
             autoArchiveDays = autoArchiveDays
         )
+
+        scheduleNotification(task)
 
         Injection.taskDao.insertTask(task)
         Toast.makeText(this@AddTaskActivity, "Task saved successfully!", Toast.LENGTH_SHORT).show()

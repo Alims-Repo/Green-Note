@@ -1,7 +1,6 @@
 package com.alim.greennote.di
 
 import android.content.Context
-import com.alim.greennote.data.dao.TaskDao
 import com.alim.greennote.data.local.AppDatabase
 import com.alim.greennote.data.local.DatabaseProvider
 import com.alim.greennote.data.repository.DrawingRepository
@@ -16,6 +15,8 @@ object Injection {
     private var _drawingRepository: DrawingRepository? = null
 
     val taskDao get() = _appDatabase!!.taskDao()
+
+    val noteDao get() = _appDatabase!!.noteDao()
 
     val drawingDao get() = _appDatabase!!.drawingDao()
 
